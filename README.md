@@ -87,7 +87,11 @@ All datasets are sourced from open biological repositories and contain high-dime
 - `tissue_gene_expression.csv`
 - `Data.csv` – Additional gene dataset from repository
 
-> Source: https://github.com/jeremy-goldwasser/feature-rankings
+> Sources:
+https://github.com/MahanPourhosseini/Breast-Cancer-Gene-Expression-Analysis/blob/main/Data.csv
+https://github.com/mark-datanaltek/CRC_geneExpression_and_survival/blob/main/data/Colorectal%20Cancer%20Gene%20Expression%20Data.csv
+https://vincentarelbundock.github.io/Rdatasets/datasets.html
+https://github.com/SBRG/precise-db/blob/master/data/log_tpm.csv
 
 ---
 
