@@ -1,58 +1,128 @@
-# Unsupervised Explainability: Dimensionality Reduction & Model-Agnostic Methods
+# X-DRXAI: Explainable Dimensionality-Reduction-Driven Unsupervised Learning
+
+**X-DRXAI** is a novel machine learning pipeline designed to bring explainability to unsupervised learning tasks by combining dimensionality reduction, clustering, and post hoc explanation techniques. It is especially effective for analyzing high-dimensional datasets such as gene expression profiles.
+
+---
 
 ## Overview
 
-This project provides a framework to apply **SHAP** and **LIME** to **unsupervised models** using **dimensionality reduction (DR)** methods like **PCA**, **t-SNE**, and **UMAP**. The goal is to make unsupervised models more interpretable and reveal how original features influence reduced components.
+Unsupervised models like KMeans or DBSCAN often fail to explain why certain clusters are formed, particularly in biological datasets. This project introduces a model-agnostic pipeline where:
+
+- **PCA** is used to preserve linear variance,
+- **UMAP** enhances non-linear separability,
+- **KMeans** clusters the reduced data,
+- **SHAP** and **LIME** generate explanations per cluster,
+- **A feedback loop** refines features based on SHAP values to improve clustering coherence and interpretability.
+
+---
+
+## Project Structure
+
+```
+Unsupervised_explainability/
+│
+├── X_DRXAI_Colorectal Cancer Gene Expression Data.ipynb
+├── X_DRXAI_Data.ipynb
+├── X_DRXAI_log_tpm.ipynb
+├── X_DRXAI_tissue_gene_expression.ipynb
+│
+├── New_Datasets/
+│   ├── Colorectal Cancer Gene Expression Data.csv
+│   ├── Data.csv
+│   ├── log_tpm.csv
+│   └── tissue_gene_expression.csv
+```
+
+Each notebook runs the complete X-DRXAI pipeline on a different biological dataset.
+
+---
+
+## Key Features
+
+### Preprocessing
+- Handles missing values
+- One-hot encoding for categorical variables
+- Feature standardization using `StandardScaler`
+
+### Dimensionality Reduction
+- **PCA** (n=10) to reduce initial dimensions
+- **UMAP** (n=2) for final 2D embedding
+- Explained variance plots and 95% cutoff threshold visualized
+
+### Clustering
+- **KMeans** with default 3 clusters (can be tuned)
+- **Silhouette Score** calculated for performance
+- Cluster visualizations with Seaborn
+
+### 🔎 Explainability
+- **SHAP** applied using one-vs-all logistic regression classifiers
+- Global feature importance shown as SHAP bar plots
+- **LIME** used to locally explain specific instances
+
+### Feedback Loop
+- Features with SHAP values above a threshold are retained
+- The model is optionally re-run on refined data
+- A new silhouette score and cluster plot are generated
+
+---
+
+## Outputs
+
+Each notebook produces:
+- PCA explained variance and cumulative plots
+- UMAP visualizations of clusters
+- SHAP summary bar plots per cluster
+- Optional LIME explanations per sample
+- A refined dataset based on SHAP feature thresholds
+- Feature count barplots post-refinement
+
+---
 
 ## Datasets Used
 
-- **Data.csv**: Baseline dataset with high-dimensional features.
-- **log_tpm.csv**: RNA expression data.
-- **tissue_gene_expression.csv**: Gene expression data across tissues.
-- **Colorectal Cancer Data.csv**: Gene expression for colorectal cancer.
+All datasets are sourced from open biological repositories and contain high-dimensional gene expression or tissue-specific data:
 
-## Installation
+- `Colorectal Cancer Gene Expression Data.csv`
+- `log_tpm.csv` – Log-transformed transcripts per million
+- `tissue_gene_expression.csv`
+- `Data.csv` – Additional gene dataset from repository
 
-Clone the repo and install dependencies:
+> Source: https://github.com/jeremy-goldwasser/feature-rankings
+
+---
+
+## Installation (Optional for Reproduction)
+
+This project uses Python 3.8+  
+To run the notebooks:
 
 ```bash
-git clone https://github.com/gunjan187/Unsupervised_Explainability.git
-cd Unsupervised_Explainability
-pip install -r requirements.txt
+pip install pandas numpy matplotlib seaborn scikit-learn umap-learn shap lime
 ```
 
-## Example Usage
+You may also want to install `jupyterlab` or run on Google Colab for GPU-accelerated SHAP explanations.
 
-1. Load your data (e.g., `Data.csv`) and apply **PCA**, **t-SNE**, or **UMAP** for dimensionality reduction.
-2. Use **SHAP** for global feature importance and **LIME** for local instance explanations.
+---
 
-```python
-# Example of PCA for dimensionality reduction
-from sklearn.decomposition import PCA
+## Goals
 
-pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_scaled)
+- Improve model transparency in high-dimensional unsupervised tasks
+- Identify and visualize which features drive each cluster
+- Provide researchers with interpretable groupings in omics datasets
 
-# Apply SHAP to explain PCA components
-import shap
-explainer = shap.Explainer(model, X_scaled)
-shap_values = explainer(X_scaled)
-shap.plots.beeswarm(shap_values)
-```
+---
 
-### Visualizing t-SNE
+## Citation
 
-```python
-from sklearn.manifold import TSNE
-import matplotlib.pyplot as plt
+If using this work for academic or research purposes, please cite:
 
-tsne = TSNE(n_components=2, perplexity=30)
-X_tsne = tsne.fit_transform(X_scaled)
-plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c='blue')
-plt.title('t-SNE Visualization')
-plt.show()
-```
+> Sharma, G. (2025). *X-DRXAI: Explainable Dimensionality-Reduction-Driven Unsupervised Learning*. Deakin University.
 
-## Contributing
+---
 
-Feel free to fork and submit pull requests for improvements.
+## Author
+
+**Gunjan Sharma**  
+Bachelor of Software Engineering (Honours),  
+Deakin University, Australia  
+[LinkedIn](https://www.linkedin.com) (optional)
